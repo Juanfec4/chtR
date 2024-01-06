@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { InputElementType } from "../../../@types/enums";
+import api from "../../../services/api";
 import PrimaryButton from "../../buttons/primary";
 import TextInput from "../../inputs/text";
-
 const RegisterForm: FC = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -11,26 +11,43 @@ const RegisterForm: FC = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [formError, setFormError] = useState("");
 
+  const navigator = useNavigate();
+
   //Handle submit
-  const handleRegister = () => {
+  const handleRegister = async () => {
     //Validate data
-    if (password !== passwordConfirmation) {
-      setFormError("Passwords must match!");
-      return;
-    }
     if (!name || !username || !password || !passwordConfirmation) {
       setFormError("Missing fields!");
       return;
     }
-    setFormError("");
 
-    //Register logic
+    if (password !== passwordConfirmation) {
+      setFormError("Passwords must match!");
+      return;
+    }
+
+    try {
+      //Send data to API
+      await api.register(username, name, password);
+
+      //Reset state
+      setName("");
+      setUsername("");
+      setPassword("");
+      setPasswordConfirmation("");
+      setFormError("");
+
+      //Redirect to login
+      navigator("/auth/login");
+    } catch (e: any) {
+      setFormError(e.response.data);
+    }
   };
 
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="p-6 grow flex flex-col justify-center min-w-96 md:min-w-0"
+      className="p-6 grow flex flex-col justify-center min-w-96 md:min-w-0 max-w-96"
     >
       <TextInput
         inputType={InputElementType.text}
@@ -68,7 +85,7 @@ const RegisterForm: FC = () => {
         name="passwordConfirmation"
         changeFn={(e) => setPasswordConfirmation(e.target.value)}
       />
-      <p className="h-6 text-red-500 text-sm">{formError}</p>
+      <p className="min-h-6 text-red-500 text-sm mb-1">{formError}</p>
       <PrimaryButton text="Register " clickFn={handleRegister} />
       <p className="text-sm italic mt-2">
         Already have an account?{" "}
