@@ -14,9 +14,11 @@ const createUser = async (
   isError: boolean;
   createdId: number | undefined;
   errorMessage: string | undefined;
+  errNo: undefined | number;
 }> => {
   //Error message
   let errorMessage: undefined | string = undefined;
+  let errNo: undefined | number = undefined;
 
   try {
     // Create user
@@ -27,7 +29,7 @@ const createUser = async (
 
     // Return status
     if (createdId !== undefined) {
-      return { isError: false, createdId, errorMessage };
+      return { isError: false, createdId, errorMessage, errNo };
     }
   } catch (error: any) {
     // Handle errors
@@ -35,10 +37,11 @@ const createUser = async (
       redText(`Error creating user: ${error.code} -- ${error.errno}\n${error.sqlMessage}`)
     );
     errorMessage = error.code;
+    errNo = error.errno;
   }
 
   // No user created
-  return { isError: true, createdId: undefined, errorMessage };
+  return { isError: true, createdId: undefined, errorMessage, errNo };
 };
 
 //Get user by username

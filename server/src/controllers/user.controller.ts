@@ -33,17 +33,24 @@ const register = async (request: Request, response: Response) => {
   let hashedPassword = hashPassword(password);
 
   //Create user
-  let { createdId, isError, errorMessage } = await userService.createUser(
+  let { isError, errorMessage, errNo } = await userService.createUser(
     username,
     name,
     hashedPassword
   );
-
   //Check if it is an error
   if (isError && errorMessage) {
+    //Special error cases
+    let errDescription = "";
+    if (errNo === 1062) errDescription = "Username taken.";
+    if (errNo === 3819) errDescription = "Name or username contains forbidden characters.";
+
+    //Return error message
     return response
       .status(500)
-      .json(statusMessages.error[errorMessage] || statusMessages.error.UNKNOWN);
+      .json(
+        (statusMessages.error[errorMessage] || statusMessages.error.UNKNOWN) + " " + errDescription
+      );
   }
 
   //Return success response
