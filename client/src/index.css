@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#app {
+  @apply bg-blue-600 min-h-screen w-screen text-stone-950 p-6 md:p-12 font-source;
+}
