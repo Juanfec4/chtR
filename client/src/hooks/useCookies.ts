@@ -1,7 +1,8 @@
 const useCookies = () => {
   //Save new cookie
-  const saveCookie = (key: string, value: string) => {
-    document.cookie.concat(`${key}=${value};`);
+  const saveCookie = (key: string, value: string, expires: Date) => {
+    const expiresString = expires.toUTCString();
+    document.cookie = `${key}=${value}; expires=${expiresString}; path=/`;
   };
 
   //Get a cookie by key
@@ -17,10 +18,17 @@ const useCookies = () => {
   };
 
   //Clear all cookies
-  const clearCookies = () => {
-    document.cookie = "";
+  const clearAllCookies = () => {
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
+    }
   };
 
-  return { saveCookie, getCookie, clearCookies };
+  return { saveCookie, getCookie, clearAllCookies };
 };
 export default useCookies;

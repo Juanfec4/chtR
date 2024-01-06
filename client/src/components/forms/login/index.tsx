@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { InputElementType } from "../../../@types/enums";
 import useCookies from "../../../hooks/useCookies";
 import api from "../../../services/api";
+import jwt from "../../../services/jwt";
 import PrimaryButton from "../../buttons/primary";
 import TextInput from "../../inputs/text";
-
 const LoginForm: FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,8 +25,11 @@ const LoginForm: FC = () => {
     //Submit data to API
     try {
       let response = await api.login(username, password);
+      const payload = jwt.decodeToken(response.data.authToken);
+      const expirationDate = jwt.getExpirationDate(payload);
+
       //Save token to cookies
-      saveCookie("authToken", response.data.authToken);
+      saveCookie("authToken", response.data.authToken, expirationDate);
 
       //Reset State
       setUsername("");
