@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./layouts/app";
 import AuthLayout from "./layouts/auth";
+import WebAppLayout from "./layouts/webApp";
 import NotFoundPage from "./pages/404";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
             element: <LoginPage />,
           },
         ],
+      },
+      //Web app
+      {
+        path: "/web-app",
+        element: <WebAppLayout />,
       },
       //404 Not found
       {

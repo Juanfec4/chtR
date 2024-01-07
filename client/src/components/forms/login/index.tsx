@@ -1,7 +1,9 @@
 import { FC, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { InputElementType } from "../../../@types/enums";
 import useCookies from "../../../hooks/useCookies";
+import { login } from "../../../redux/slices/userSlice";
 import api from "../../../services/api";
 import jwt from "../../../services/jwt";
 import PrimaryButton from "../../buttons/primary";
@@ -13,6 +15,7 @@ const LoginForm: FC = () => {
 
   const navigator = useNavigate();
   const { saveCookie } = useCookies();
+  const dispatch = useDispatch();
 
   //Handle submit
   const handleLogin = async () => {
@@ -25,7 +28,7 @@ const LoginForm: FC = () => {
     //Submit data to API
     try {
       let response = await api.login(username, password);
-      const payload = jwt.decodeToken(response.data.authToken);
+      const payload = jwt.decodeToken(response.data.authToken) as any;
       const expirationDate = jwt.getExpirationDate(payload);
 
       //Save token to cookies
@@ -36,8 +39,19 @@ const LoginForm: FC = () => {
       setPassword("");
       setFormError("");
 
+      //Update redux state
+      if (payload.username && payload.id && payload.name) {
+        dispatch(
+          login({
+            username,
+            displayName: payload.name,
+            userId: payload.id,
+            userToken: response.data.authToken,
+          })
+        );
+      }
       //Redirect to app
-      navigator("/app");
+      navigator("/web-app");
     } catch (e: any) {
       setFormError(e.response.data);
     }

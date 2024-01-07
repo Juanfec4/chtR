@@ -3,21 +3,21 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { RootState } from "../../@types/redux";
 
-const AuthLayout: FC = () => {
+const WebAppLayout: FC = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const navigator = useNavigate();
 
   useEffect(() => {
     //Redirect
-    if (isLoggedIn) {
-      navigator("/web-app");
+    if (!isLoggedIn) {
+      navigator("/auth/login");
     }
   }, [isLoggedIn]);
 
   return (
-    <div id="auth-page">
+    <div id="web-app-page">
       <Outlet />
     </div>
   );
 };
-export default AuthLayout;
+export default WebAppLayout;
