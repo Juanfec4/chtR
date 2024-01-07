@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { InputElementType } from "../../../@types/enums";
 import api from "../../../services/api";
+import avatar from "../../../services/avatar";
 import PrimaryButton from "../../buttons/primary";
 import TextInput from "../../inputs/text";
 const RegisterForm: FC = () => {
@@ -26,9 +27,12 @@ const RegisterForm: FC = () => {
       return;
     }
 
+    //Generate random avatar seed
+    const seed = avatar.generateRandomSeed();
+
     try {
       //Send data to API
-      await api.register(username, name, password);
+      await api.register(username, name, password, seed);
 
       //Reset state
       setName("");

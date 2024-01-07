@@ -15,11 +15,13 @@ const App: FC = () => {
     //Check if user is not logged in on state
     if (authToken) {
       //Decode token
-      let { username, id, name } = jwt.decodeToken(authToken) as any;
+      let { username, id, name, avatarSeed } = jwt.decodeToken(authToken) as any;
       //Check if it has valid details
-      if (username && id && name) {
+      if (username && id && name && avatarSeed) {
         //Update redux state
-        dispatch(login({ username, displayName: name, userId: id, userToken: authToken }));
+        dispatch(
+          login({ username, displayName: name, userId: id, userToken: authToken, avatarSeed })
+        );
       }
     }
   }, []);

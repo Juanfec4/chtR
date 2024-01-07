@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dicebear/collection": "^5.3.5",
+    "@dicebear/core": "^5.3.5",
     "@reduxjs/toolkit": "^2.0.1",
     "@tabler/icons-react": "^2.45.0",
     "axios": "^1.6.5",

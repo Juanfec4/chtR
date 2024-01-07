@@ -8,8 +8,8 @@ const login = (username: string, password: string) => {
 };
 
 //Register
-const register = (username: string, name: string, password: string) => {
-  return axios.post(baseUrl + "/auth/register", { username, password, name });
+const register = (username: string, name: string, password: string, seed: string) => {
+  return axios.post(baseUrl + "/auth/register", { username, password, name, seed });
 };
 
 export default { login, register };

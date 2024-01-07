@@ -15,7 +15,7 @@ const AuthLayout: FC = () => {
   }, [isLoggedIn]);
 
   return (
-    <div id="auth-page">
+    <div id="auth-page" className="p-6 md:p-12">
       <Outlet />
     </div>
   );

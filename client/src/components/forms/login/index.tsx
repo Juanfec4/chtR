@@ -40,13 +40,14 @@ const LoginForm: FC = () => {
       setFormError("");
 
       //Update redux state
-      if (payload.username && payload.id && payload.name) {
+      if (payload.username && payload.id && payload.name && payload.avatarSeed) {
         dispatch(
           login({
             username,
             displayName: payload.name,
             userId: payload.id,
             userToken: response.data.authToken,
+            avatarSeed: payload.avatarSeed,
           })
         );
       }
