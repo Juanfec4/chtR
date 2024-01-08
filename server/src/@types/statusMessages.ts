@@ -10,6 +10,8 @@ const messages: Messages = {
     INVALID_PASSWORD:
       "Invalid password, must be: 8-32 characters long, at least 1 number, at least 1 uppercase letter, at least 1 lowercase letter, and at least 1 special character",
     UNKNOWN: "Unknown error.",
+    MISSING_TOKEN: "Missing authorization token.",
+    INVALID_TOKEN: "Invalid authorization token.",
     ER_CHECK_CONSTRAINT_VIOLATED: "Invalid input.",
     ER_DUP_ENTRY: "Resource already exists.",
   },

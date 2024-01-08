@@ -13,4 +13,9 @@ router.post("/login", (request: Request, response: Response) =>
   userController.login(request, response)
 );
 
+//Update user
+router.patch("/user", (request: Request, response: Response) =>
+  userController.updateUser(request, response)
+);
+
 export default router;

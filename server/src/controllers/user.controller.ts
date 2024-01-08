@@ -8,14 +8,14 @@ import { hasUndefined, isValidPassword, isValidPayload } from "../validators/pay
 //Register
 const register = async (request: Request, response: Response) => {
   //Check for presence of keys
-  if (!isValidPayload(request.body, ["username", "name", "password"])) {
+  if (!isValidPayload(request.body, ["username", "name", "password", "seed"])) {
     return response.status(400).json(statusMessages.error.INVALID_BODY);
   }
   //Extract payload
-  let { username, name, password } = request.body;
+  let { username, name, password, seed } = request.body;
 
   //Check if values are missing
-  if (hasUndefined([username, name, password])) {
+  if (hasUndefined([username, name, password, seed])) {
     return response.status(400).json(statusMessages.error.MISSING_REQUIRED_FIELDS);
   }
 
@@ -36,7 +36,8 @@ const register = async (request: Request, response: Response) => {
   let { isError, errorMessage, errNo } = await userService.createUser(
     username,
     name,
-    hashedPassword
+    hashedPassword,
+    seed
   );
   //Check if it is an error
   if (isError && errorMessage) {
@@ -90,10 +91,51 @@ const login = async (request: Request, response: Response) => {
   }
 
   //Create JWT
-  let token = await jwtService.createToken(user.username, user.name, user.id);
+  let token = await jwtService.createToken(user.username, user.name, user.id, user.seed);
 
   //Return token
   return response.status(200).json({ authToken: token });
 };
 
-export default { register, login };
+//Update seed or displayname
+const updateUser = async (request: Request, response: Response) => {
+  //Check if token is present
+  if (!request.headers.authorization) {
+    return response.status(400).json(statusMessages.error.MISSING_TOKEN);
+  }
+
+  //Extract token
+  const authToken = request.headers.authorization;
+
+  //Decode token
+  const decoded = (await jwtService.verifyToken(authToken)) as any;
+
+  //Check if token is valid
+  if (!decoded || !decoded.id) {
+    return response.status(400).json(statusMessages.error.INVALID_TOKEN);
+  }
+  //Extract payload
+  let { newSeed, newName } = request.body;
+
+  //Update user
+  let { isError, errorMessage, user, errNo } = await userService.updateUser(decoded.id, {
+    newSeed,
+    newName,
+  });
+
+  //Could not update
+  if (isError) {
+    let errDescription = "";
+    if (errNo === 3819) errDescription = "Name contains forbidden characters.";
+    return response.status(500).json(errorMessage || errDescription);
+  }
+  if (!user || !user.id) {
+    return response.status(500).json(statusMessages.error.UNKNOWN);
+  }
+  //Create JWT
+  let token = await jwtService.createToken(user.username, user.name, user.id, user.seed);
+
+  //Return token
+  return response.status(200).json({ newAuthToken: token });
+};
+export default { register, login, updateUser };

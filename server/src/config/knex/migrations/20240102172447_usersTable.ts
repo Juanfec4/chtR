@@ -13,6 +13,9 @@ export async function up(knex: Knex): Promise<void> {
 
     //Password hash
     table.string("password").notNullable();
+
+    //Avatar seed
+    table.string("seed").notNullable();
   });
 }
 
