@@ -1,8 +1,5 @@
 import { FC } from "react";
-
-interface OnlineStatusProps {
-  status: boolean;
-}
+import { OnlineStatusProps } from "../../../@types/props";
 
 const OnlineStatus: FC<OnlineStatusProps> = ({ status }) => {
   if (status === true) {

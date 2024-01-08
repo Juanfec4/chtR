@@ -50,9 +50,19 @@ const userSlice = createSlice({
       state.avatarSeed = null;
       state.isLoggedIn = false;
     },
+    changeAvatarSeed: (state, action: PayloadAction<{ newSeed: string }>) => {
+      if (action.payload.newSeed) state.avatarSeed = action.payload.newSeed;
+    },
+    changeDisplayName: (state, action: PayloadAction<{ newDisplayName: string }>) => {
+      if (action.payload.newDisplayName) state.displayName = action.payload.newDisplayName;
+    },
+    changeUserToken: (state, action: PayloadAction<{ newToken: string }>) => {
+      if (action.payload.newToken) state.userToken = action.payload.newToken;
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, changeAvatarSeed, changeDisplayName, changeUserToken } =
+  userSlice.actions;
 
 export default userSlice.reducer;

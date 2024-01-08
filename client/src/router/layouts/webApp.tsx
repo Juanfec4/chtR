@@ -16,11 +16,11 @@ const WebAppLayout: FC = () => {
   }, [isLoggedIn]);
 
   return (
-    <div id="web-app-page" className=" grid grid-cols-12 gap-4 min-h-screen">
-      <aside className=" col-span-2 bg-slate-100">
+    <div id="web-app-page" className=" grid grid-cols-12 min-h-screen">
+      <aside className=" col-span-2 bg-neutral-100 border-r border-neutral-300">
         <UserDetailsCard />
       </aside>
-      <main className=" col-span-10">
+      <main className=" col-span-10 bg-neutral-200">
         <Outlet />
       </main>
     </div>

@@ -19,3 +19,8 @@ export interface InputProps {
   placeholder?: string;
   inputType: InputElementType;
 }
+
+//Misc
+export interface OnlineStatusProps {
+  status: boolean;
+}
