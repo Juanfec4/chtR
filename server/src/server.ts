@@ -1,23 +1,38 @@
 import dotenv from "dotenv";
 import express from "express";
+import http from "http";
 import ip from "ip";
+import { Socket, Server as SocketIoServer } from "socket.io";
 import cors from "./config/cors/cors.config";
 import userRouter from "./routers/user.router";
+import { searchSocket } from "./sockets/searchUser.socket";
 
-//Environment variables
+// Environment variables
 dotenv.config();
 
-//Setup
+// Setup
 const port = process.env.PORT || 8080;
 const server = express();
 server.use(cors);
 server.use(express.json());
 
-//Middlewares
+// Create http server and pass it to socket.io
+const httpServer = http.createServer(server);
+const io = new SocketIoServer(httpServer, { cors: { origin: process.env.CLIENT_ORIGIN || "*" } });
 
-//Routers
+// Middlewares
+
+// Routers
 server.use("/auth", userRouter);
 
-server.listen(port, () => {
-  console.log(`Server started on: http://${ip.address()}:${port}`);
+// Sockets
+io.on("connection", (socket: Socket) => {
+  // Auth Socket
+  // Friend Search Socket
+  searchSocket(io, socket);
+});
+
+// Start the combined server
+httpServer.listen(port, () => {
+  console.log(`Server and Socket.IO started on: http://${ip.address()}:${port}`);
 });

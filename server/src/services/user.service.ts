@@ -111,4 +111,34 @@ const updateUser = async (
   }
 };
 
-export default { createUser, getUserByUsername, updateUser };
+//Find users
+const findUsers = async (
+  query: string
+): Promise<{ users: any[]; errorMessage: string | undefined; isError: boolean }> => {
+  let errorMessage = undefined;
+
+  // Check if the query is empty
+  if (!query.trim()) {
+    return { users: [], errorMessage, isError: false };
+  }
+
+  try {
+    //Get users
+    const users = await knex("users")
+      .select("id", "username", "name", "seed")
+      .where((builder) => {
+        builder.where("username", "like", `%${query}%`);
+      })
+      .limit(5);
+
+    return { users, errorMessage, isError: false };
+    //Error
+  } catch (error: any) {
+    console.error(
+      redText(`Error updating user: ${error.message} -- ${error.code}\n${error.sqlMessage}`)
+    );
+    return { users: [], errorMessage: error.message, isError: true };
+  }
+};
+
+export default { createUser, getUserByUsername, updateUser, findUsers };
