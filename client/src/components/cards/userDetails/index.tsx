@@ -44,7 +44,7 @@ const UserDetailsCard: FC = () => {
   if (!isLoggedIn) return null;
 
   return (
-    <div className="flex p-6 gap-2 border-b border-neutral-300 relative">
+    <div className="flex p-6 gap-2 border-b border-neutral-300 relative bg-neutral-50">
       <img src={svg} alt="" className="h-20 w-20 rounded-md" />
       <div>
         {/*TODO: Switch to onlineStatus from socket connection*/}

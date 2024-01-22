@@ -1,5 +1,6 @@
 import { Icon } from "@tabler/icons-react";
-import { ChangeEvent } from "react";
+import { ChangeEvent, ReactNode } from "react";
+import { Socket } from "socket.io-client";
 import { InputElementType } from "./enums";
 
 //Buttons
@@ -23,4 +24,14 @@ export interface InputProps {
 //Misc
 export interface OnlineStatusProps {
   status: boolean;
+}
+
+export interface ProfileSectionProps {
+  title: string;
+  children: ReactNode;
+}
+
+export interface SocketContextProps {
+  socket?: Socket | null;
+  children?: ReactNode;
 }

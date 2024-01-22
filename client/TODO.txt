@@ -1,0 +1,19 @@
+TODO: Create REST API service endpoints
+
+1. Request friend 
+
+2. Accept friend
+
+3. Reject friend
+
+4. Get pending requests
+
+5. Get friends
+
+TODO: Create Friends page 
+
+- Incoming Friend Requests
+
+- Friend Search
+
+- All friends

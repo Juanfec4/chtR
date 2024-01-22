@@ -18,7 +18,7 @@ const TextInput: FC<InputProps> = ({
         </label>
       )}
       <input
-        className="bg-transparent border border-stone-400 rounded-md outline-none transition duration-200 placeholder:text-stone-500 max-w-80 shadow-sm h-12 px-3"
+        className="bg-transparent text-sm border border-stone-400 rounded-md outline-none transition duration-200 placeholder:text-stone-500 max-w-80 shadow-sm h-12 px-3"
         type={inputType}
         value={value}
         onChange={changeFn}
