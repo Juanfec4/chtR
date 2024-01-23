@@ -13,3 +13,11 @@ export interface Friendship {
   status: "pending" | "accepted";
   created_at: Date;
 }
+
+export interface Friend {
+  username: string;
+  name: string;
+  friend_id: number;
+  seed: string;
+  friendship_id: string;
+}
