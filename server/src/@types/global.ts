@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export type Messages = {
   error: {
     [key: string]: string;
@@ -7,3 +9,7 @@ export type Messages = {
     CREATED: "Created successfully.";
   };
 };
+
+export interface AuthenticatedRequest extends Request {
+  user?: any;
+}
